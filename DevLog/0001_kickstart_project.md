@@ -2,7 +2,8 @@
 **Date:** 2026-03-20
 
 ## Objective
-Start the first DevOps project locally. Initial setup with version control, basic documentation, and ignoring unnecessary files.
+Start the first DevOps project locally. 
+Initial setup with version control, basic documentation, and ignoring unnecessary files.
 
 ## Steps Completed
 
