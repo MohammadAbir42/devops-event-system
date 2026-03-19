@@ -45,14 +45,15 @@ Node.js Alert Service → Optional analytics
 ---
 
 ## 📂 Project Structure
-python-api/ # FastAPI backend
-nodejs-alert-service/ # Node.js alert/analytics service
-nginx/ # Reverse proxy configuration
-prometheus/ # Prometheus configuration
-grafana/ # Grafana dashboards
-DevLog/ # Development logs and design decisions
-README.md # Project description
-.gitignore # Ignored files
+
+- `python-api/`: FastAPI backend
+- `nodejs-alert-service/`: Node.js alert/analytics service
+- `nginx/`: Reverse proxy configuration
+- `prometheus/`: Prometheus configuration
+- `grafana/`: Grafana dashboards
+- `DevLog/`: Development logs and design decisions
+- `README.md`: Project description
+- `.gitignore`: Ignored files
 
 ---
 
@@ -101,11 +102,9 @@ http://127.0.0.1:8000/docs
 
 ## 📝 DevLog
 
-See `/DevLog` for:
+See `/DevLog` for daily development progress, design decisions, and trade-offs.
 
-- Daily development progress
-- Design decisions
-- Trade-offs and rationale
+- [0001: Kickstarting DevOps Practice Project](./DevLog/0001_kickstart_project.md)
 
 ---
 
