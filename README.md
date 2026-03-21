@@ -1,26 +1,6 @@
 # DevOps Event System
 
-A DevOps-focused backend system demonstrating real-world practices including **layered architecture**, **event-driven design**, and **observability**.
-
----
-
-## 🚀 Features
-
-- **Layered FastAPI architecture** (Controller → Service → Repository → Model)
-- **Event-driven design** for tracking system activity
-- **Prometheus metrics integration** for monitoring
-- **Grafana dashboards** for visualization
-- **Docker-based local environment**
-- **Nginx reverse proxy setup**
-- **CI/CD pipeline with GitHub Actions**
-- **DevLog** for documenting progress and decisions
-
----
-
-## 🧩 Architecture Overview
-# DevOps Event System
-
-A DevOps-focused backend system demonstrating real-world practices including **layered architecture**, **event-driven design**, and **observability**.
+A DevOps-focused backend system implementing production-inspired practices including **layered architecture**, **event-driven design**, and **observability**.
 
 ---
 
@@ -40,7 +20,7 @@ A DevOps-focused backend system demonstrating real-world practices including **l
 ## 🧩 Architecture Overview
 Frontend → Python API → Database
 ↘ Prometheus → Grafana
-Node.js Alert Service → Optional analytics
+Node.js Alert Service → Handles alerting and analytics processing
 
 ---
 
@@ -59,9 +39,9 @@ Node.js Alert Service → Optional analytics
 
 ## 📊 Observability
 
-- Metrics exposed via `/metrics` endpoint  
-- Prometheus scrapes the metrics regularly  
-- Grafana visualizes system behavior
+- Application exposes metrics via `/metrics` endpoint  
+- Prometheus scrapes and stores time-series data  
+- Grafana dashboards provide real-time system observability and insights
 
 ---
 
@@ -110,15 +90,24 @@ See `/DevLog` for daily development progress, design decisions, and trade-offs.
 
 ## 🎯 Purpose
 
-- Practice DevOps concepts in a local environment
-- Create a **reusable backend template**
-- Demonstrate **real-world architecture** to recruiters
+- Apply DevOps practices in a local, production-like environment 
+- Build a reusable and extensible backend service foundation  
+- Implement real-world architecture patterns including service isolation, observability, and reverse proxying  
 
 ---
 
 ## 🔮 Future Improvements
 
-- Add Kubernetes deployment
-- Cloud deployment (AWS)
-- Advanced alerting system
-- Enhanced metrics analytics
+- Introduce container orchestration using Kubernetes 
+- Deploy infrastructure on AWS (ECS/EKS + CI/CD integration)
+- Implement alerting with threshold-based and event-driven triggers 
+- Expand observability with distributed tracing and log aggregation  
+
+---
+
+## 🧠 Design Goals
+
+- Maintain clear separation of concerns using layered architecture
+- Ensure observability across services
+- Keep the system modular and extensible
+- Simulate production-like DevOps workflows locally 
