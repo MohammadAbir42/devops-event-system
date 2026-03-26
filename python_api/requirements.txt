@@ -1,0 +1,20 @@
+# a
+alembic
+asyncpg
+# f
+fastapi
+# h
+httpx
+# p
+psycopg2-binary
+pydantic
+pydantic-settings
+pytest
+python-dotenv
+python-json-logger
+# r
+requests
+# s
+sqlalchemy
+# u
+uvicorn
