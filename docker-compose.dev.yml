@@ -63,9 +63,59 @@ services:
       start_period: 20s
     networks:
       - backend
-    
+
+  # Prometheus service for monitoring
+  prometheus:
+    image: prom/prometheus:latest # TODO: use a specific version in production for consistency
+    container_name: devops-event-prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=15d"
+    volumes:
+      - prometheus_data:/prometheus
+      - ./ops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090" # exposed only for local observability, in production this should not be exposed publicly
+    depends_on:
+      python-api:
+        condition: service_started
+    networks:
+      - backend
+  
+  # Grafana service for visualizing metrics
+  grafana:
+    image: grafana/grafana:12.1.1
+    container_name: devops-event-grafana
+    restart: unless-stopped
+    ports:
+      - "3003:3000"
+    env_file:
+      - ./.env
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GF_SECURITY_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: ${GF_USERS_ALLOW_SIGN_UP:-false}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./ops/grafana/provisioning:/etc/grafana/provisioning
+      - ./ops/grafana/dashboards:/etc/grafana/provisioning/dashboards-json
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    depends_on:
+      prometheus:
+        condition: service_started
+    networks:
+      - backend
+
 volumes:
   postgres_data:
+  prometheus_data:
+  grafana_data:
 
 networks:
   backend:
