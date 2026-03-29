@@ -85,6 +85,7 @@ http://127.0.0.1:8000/docs
 See `/DevLog` for daily development progress, design decisions, and trade-offs.
 
 - [0001: Kickstarting DevOps Practice Project](./DevLog/0001_kickstart_project.md)
+- [0002: Designing a Scalable Async Backend with FastAPI](./DevLog/002_backend_implementation.md)
 
 ---
 
