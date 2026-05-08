@@ -1,33 +1,49 @@
-# Kickstarting DevOps Practice Project
+# Project Foundation
 **Date:** 2026-03-20
 
 ## Objective
-Start the first DevOps project locally. 
-Initial setup with version control, basic documentation, and ignoring unnecessary files.
 
-## Steps Completed
+Set up the repository foundation for a compact backend engineering portfolio project.
 
-**1. Initialized Git repository**
+The initial goal was to create a clean workspace for a FastAPI service, database-backed workflows, local runtime configuration, and engineering notes that explain decisions as the project evolves.
+
+## Work Completed
+
+**Initialized version control**
+
+Created a Git repository so implementation history and documentation changes can be reviewed over time.
 
 ```bash
 git init
 ```
 
-**2. Created `.gitignore`**
-- **Ignoring:**
-  - Node.js: `node_modules/`
-  - Python: `__pycache__/`, `.venv/`
-  - IDEs: `.vscode/`, `.idea/`
-  - OS: `.DS_Store`, `Thumbs.db`
-- `.gitignore` ready for multi-language DevOps stack.
+**Added ignore rules**
 
-**3. Created `README.md`**
-- Project description: purpose, goals, and expected outcomes.
+Created `.gitignore` entries for generated files, local environments, editor metadata, and operating system artifacts. This keeps the repository focused on source code, configuration, migrations, and documentation.
 
-**4. Created `/DevLog` folder**
-- Purpose: document all steps, decisions, and lessons learned during project development.
+**Created the initial README**
+
+Started the project documentation with the intended purpose, local setup direction, and expected areas of implementation.
+
+**Created the DevLog directory**
+
+Added a place to record design notes, implementation choices, and tradeoffs. The DevLog is a lightweight decision record for reviewers and for future maintenance.
+
+## Positioning Decision
+
+Although the repository includes Docker Compose and observability tooling, the primary focus is backend engineering:
+
+- maintainable service structure
+- reliable database access
+- API health and diagnostics
+- clear documentation of tradeoffs
+- repeatable local execution
+
+Infrastructure and observability are supporting concerns that make the backend easier to operate and review.
 
 ## Next Steps
-- Add basic project structure (Python API, Node.js service, Nginx, Prometheus, Grafana).
-- Create Dockerfile and `docker-compose` for local testing.
-- Start CI/CD workflow experimentation (GitHub Actions or local scripts).
+
+- Build the FastAPI service structure
+- Add PostgreSQL persistence and migrations
+- Introduce health checks and structured logging
+- Add metrics that make API behavior visible during local review

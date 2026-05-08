@@ -1,121 +1,70 @@
-# Designing a Scalable Async Backend with FastAPI
+# Backend Implementation
 **Date:** 2026-03-25
 
-## 🎯 Objective
-Design and implement a backend system that is:
+## Objective
 
-- scalable under concurrent load
-- maintainable with clear separation of concerns
-- extensible for future features and services
+Implement a maintainable FastAPI backend with explicit boundaries between HTTP handling, business logic, persistence, validation, and database models.
 
----
+The goal was not to make the largest possible service. The goal was to make a small service that shows how backend code can be structured so it remains understandable as features are added.
 
-## 🏗️ Architecture Decisions
-I implemented a layered architecture:
+## Architecture Decisions
 
-- **Controller layer** → request/response handling
-- **Service layer** → business logic
-- **Repository layer** → database interaction
-- **Model layer** → ORM entities
+The service uses a layered structure:
 
-This ensures:
+- **Controllers:** define HTTP routes, request handling, and response behavior
+- **Services:** hold business workflow and orchestration logic
+- **Repositories:** isolate database access
+- **Models:** define SQLAlchemy persistence entities
+- **Schemas:** define request and response contracts with Pydantic
 
-- clear separation of concerns
-- easier unit testing
-- flexibility to swap implementations
+This structure keeps framework concerns, business rules, and persistence details from blending together. It also makes future testing more focused because each layer has a clear responsibility.
 
-Reusable abstractions (**BaseRepository**, **BaseService**) were introduced to reduce duplication.
+## Async Database Access
 
----
+The API uses FastAPI with SQLAlchemy async sessions and asyncpg for PostgreSQL access.
 
-## ⚡ Async-First Design
+This was chosen because database-backed APIs often spend time waiting on I/O. Async database access allows the application to handle concurrent requests without tying each wait to a dedicated worker thread.
 
-The system uses async **FastAPI** + async **SQLAlchemy**:
+The tradeoff is that session lifecycle and exception paths need to be handled carefully. The project uses dependency-managed async sessions to keep database access explicit and consistent.
 
-**Why:**
+## Implementation Corrections
 
-- event systems are I/O bound
-- better concurrency with fewer threads
-- avoids blocking operations
+**Async session lifecycle**
 
-**Trade-off:**
+Early database access used session setup that did not fit the async SQLAlchemy path cleanly. The implementation was corrected to use `async_sessionmaker` and dependency-managed session creation.
 
-- increased complexity in session management
-- harder debugging
+**Timestamp defaults**
 
----
+An incorrect timestamp default caused insert behavior to fail at runtime. The model default was corrected to use a callable UTC timestamp value instead of a static or malformed default.
 
-## ❗ Challenges Faced
+**Router abstraction**
 
-**1. Async Session Mismanagement**
+A generic router helper reduced some repetition, but it also made route ownership easier to blur. The implementation keeps explicit prefixes such as `/events` so resource boundaries remain clear.
 
-- Used **sessionmaker** incorrectly in async context
-- Caused unstable DB interactions
+**Base classes**
 
-**✅Fix:**
+Reusable base repository and service classes are useful for simple CRUD behavior, but they should not hide domain intent. The current design allows resource-specific methods where the domain needs them.
 
-- switched to **async_sessionmaker**
-- enforced proper lifecycle via dependency injection
+## Tradeoffs
 
-**2. SQLAlchemy Default Value Bug**
+| Decision | Benefit | Tradeoff |
+| --- | --- | --- |
+| Layered service structure | Clear ownership and easier extension | More files than a single-module demo |
+| Async PostgreSQL access | Better fit for concurrent I/O | More care needed around session lifecycle |
+| Base repository/service classes | Reduces repeated CRUD code | Can become too generic if overused |
+| Explicit route prefixes | Clear API boundaries | Slightly more manual route setup |
 
-- Incorrect default value `(DateTime(timezone=True))`
-- Caused runtime insert failures
+## Takeaways
 
-**✅Fix:**
+- Maintainable backend code depends on boundaries, not only framework choice.
+- Async database workflows are useful, but the lifecycle must be deliberate.
+- Abstractions should reduce repetition without hiding the domain.
+- Small portfolio projects can still show production-minded backend engineering when operational behavior and tradeoffs are made visible.
 
-- replaced with `datetime.now(timezone.utc)`
+## Future Work
 
-**3. Generic Router Conflict**
-
-- Base router abstraction caused route collisions
-
-**✅Fix:**
-
-- introduced explicit prefixes (`/events`, `/users`)
-- reduced over-abstraction
-
-**4. Over-Abstraction Risk**
-
-- Base classes became too generic
-
-**✅Fix:**
-
-- simplified base layers
-- allowed domain-specific overrides
-
----
-
-## ⚖️ Trade-offs
-
-| **Decision** | **Benefit** | **Trade-off** |
-|:------------:|:-----------:|:-------------:|
-| Generic base classes | Less duplication | Reduced flexibility |
-| Async DB | Scalability | Debug complexity |
-| Strict layering | Maintainability | Boilerplate |
-
----
-
-## 🧠 What I Learned
-
-- Abstraction must not hide domain intent
-- Async systems require strict lifecycle control
-- ORM mistakes often come from implicit misuse
-- Clean architecture is about boundaries, not layers
-
----
-
-## 🚀 Future Plans
-
-- Introduce **domain-driven design (DDD-lite)** for better domain modeling
-- Add unit of work pattern for transaction management
-- Implement **caching layer (Redis)** to reduce DB load
-- Introduce **API versioning strategy** for backward compatibility
-- Add **background workers (Celery / async tasks)** for event processing
-
----
-
-## 🔥 Key Takeaway
-
-The backend is designed not just to function, but to evolve —
-balancing scalability, clarity, and long-term maintainability.
+- Add service-level tests around business rules
+- Add repository tests using a controlled database fixture
+- Introduce API versioning when client contract changes require it
+- Add authentication and authorization for protected workflows
+- Consider a unit-of-work pattern if transaction boundaries become more complex
