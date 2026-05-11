@@ -5,7 +5,7 @@
 
 Add operational signals that make the backend easier to run, inspect, and diagnose in a local environment.
 
-This work supports the backend engineering focus of the project. The goal is not to present the repository as an infrastructure platform, but to show that the API is designed with runtime behavior and failure diagnosis in mind.
+This work supports the backend engineering focus of the repository. The goal is not to present the system as a full infrastructure platform, but to make runtime behavior and failure diagnosis visible from the service boundary.
 
 ## Health Checks
 
@@ -36,9 +36,9 @@ This gives each request a traceable identifier during local debugging and create
 
 ## Local Observability
 
-Prometheus and Grafana are included in Docker Compose so reviewers can inspect API behavior without setting up external services.
+Prometheus and Grafana are included in Docker Compose so API behavior can be inspected without setting up external services.
 
-This is intentionally scoped to local review:
+This is intentionally scoped to local operation:
 
 - Prometheus scrapes the FastAPI `/metrics` endpoint.
 - Grafana is provisioned with datasource and dashboard configuration.
@@ -51,8 +51,8 @@ This is intentionally scoped to local review:
 | Metrics middleware | Consistent coverage across routes | Middleware must avoid polluting metrics with scrape traffic |
 | Separate readiness check | Captures dependency health | Adds a database call to readiness probes |
 | Structured request logs | Easier debugging and correlation | Requires consistent logging conventions over time |
-| Local Grafana provisioning | Faster reviewer setup | Not a substitute for managed production monitoring |
+| Local Grafana provisioning | Faster environment setup | Not a substitute for managed production monitoring |
 
 ## Takeaway
 
-Operational signals are included to support reliable backend workflows. They make it easier to understand how the service behaves under normal and failing conditions, while keeping the project compact enough for portfolio review.
+Operational signals are included to support reliable backend workflows. They make it easier to understand how the service behaves under normal and failing conditions while keeping the system compact enough to maintain.

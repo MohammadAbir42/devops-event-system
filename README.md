@@ -1,16 +1,16 @@
 # Event Service Backend
 
-A production-inspired backend engineering portfolio project built with FastAPI, async PostgreSQL, structured logging, health probes, and Prometheus/Grafana observability.
+An event-driven backend service foundation built with FastAPI, async PostgreSQL, structured logging, health probes, and Prometheus/Grafana observability.
 
-This repository focuses on maintainable service boundaries, reliable database workflows, observable API design, and repeatable local environments. It is intentionally compact so reviewers can evaluate the architecture, code organization, and operational thinking without navigating a large application.
+This repository presents a compact but production-oriented backend system for recording and inspecting event records. It emphasizes maintainable service boundaries, reliable database workflows, observable API behavior, and repeatable containerized runtime workflows.
 
-## Why This Repo Exists
+## System Purpose
 
-This project demonstrates how I approach backend engineering beyond basic API implementation. It focuses on maintainable service boundaries, reliable database workflows, structured observability, repeatable local environments, and clear documentation of engineering decisions.
+The service exposes an HTTP API for creating, listing, and summarizing event records backed by PostgreSQL. Around that core workflow, the repository includes the operational surfaces expected from a backend service: database migrations, health checks, metrics, structured request logs, tests, and Docker Compose orchestration.
 
-The goal is to show production-oriented backend thinking in a compact, reviewable system: how services are structured, how operational signals are exposed, how failures can be diagnosed, and how the codebase can evolve without becoming tightly coupled.
+The implementation is intentionally scoped so the architecture is easy to inspect. The emphasis is not on claiming enterprise scale; it is on showing how a backend service can be structured for ownership, maintainability, runtime diagnosis, and future extension.
 
-## What This Project Demonstrates
+## Engineering Signals
 
 - Layered FastAPI service design using controller, service, repository, model, and schema boundaries
 - Async PostgreSQL access with SQLAlchemy and asyncpg
@@ -18,9 +18,9 @@ The goal is to show production-oriented backend thinking in a compact, reviewabl
 - Request validation and response serialization with Pydantic
 - Liveness and readiness health checks for reliable runtime workflows
 - Prometheus metrics for request volume, latency, and error visibility
-- Grafana dashboard provisioning for local observability review
+- Grafana dashboard provisioning for local observability inspection
 - Structured JSON request logging with request IDs
-- Docker Compose environment for local development and reviewer setup
+- Docker Compose workflows for repeatable local execution
 - DevLog documentation that records architecture decisions, tradeoffs, and implementation notes
 
 ## Architecture
@@ -45,7 +45,7 @@ flowchart LR
     grafana[Grafana] --> prometheus
 ```
 
-The service manages event records through a layered backend. The supporting runtime exposes operational signals through health checks, request metrics, structured logs, and Docker health checks so failures are easier to identify during local review and future deployment work.
+The service manages event records through a layered backend. Runtime behavior is exposed through health checks, request metrics, structured logs, and Docker health checks so dependency failures and API behavior are easier to diagnose during local operation and future deployment work.
 
 ## Tech Stack
 
@@ -109,15 +109,17 @@ Example event payload:
 
 ## Engineering Decisions
 
-**Layered architecture:** Controllers, services, repositories, models, and schemas are kept separate so request handling, business rules, persistence, and validation can evolve independently. In a small project this adds some structure, but it makes the service easier to extend and review.
+**Layered architecture:** Controllers, services, repositories, models, and schemas are kept separate so request handling, business rules, persistence, and validation can evolve independently. For this scoped service, the extra structure is a deliberate tradeoff for clearer ownership and future extension.
 
-**Async PostgreSQL access:** FastAPI, SQLAlchemy async sessions, and asyncpg were used because API workloads commonly spend time waiting on database I/O. The async approach supports concurrent request handling while keeping database access explicit through dependency-managed sessions.
+**Async PostgreSQL access:** FastAPI, SQLAlchemy async sessions, and asyncpg are used because API workloads commonly spend time waiting on database I/O. The async approach supports concurrent request handling while keeping database access explicit through dependency-managed sessions.
 
 **Separate liveness and readiness checks:** Liveness confirms the application process can respond. Readiness checks whether the service can safely handle traffic by verifying database connectivity. Splitting these concerns mirrors how container platforms distinguish between restarting an unhealthy process and temporarily removing a service from traffic.
 
-**Prometheus and Grafana:** Metrics and dashboards were added to make API behavior visible during local review: request volume, latency, and error counts can be inspected without adding route-specific instrumentation everywhere.
+**Prometheus and Grafana:** Metrics and dashboards make API behavior visible during operation: request volume, latency, and error counts can be inspected without adding route-specific instrumentation throughout the application.
 
-**DevLog:** The DevLog exists to document design intent, tradeoffs, and corrections as the project evolves. It gives reviewers context for why the code is shaped the way it is, not only what was implemented.
+**API lifecycle awareness:** The current API surface is intentionally narrow, with explicit resource boundaries and OpenAPI documentation through FastAPI. Versioning is listed as future work because it becomes valuable when multiple client contracts need to be supported.
+
+**DevLog:** The DevLog documents design intent, tradeoffs, and corrections as the system evolves. It gives maintainers context for why the code is shaped the way it is, not only what was implemented.
 
 ## Running Locally
 
@@ -189,6 +191,8 @@ Prometheus is configured to scrape the FastAPI service, and Grafana is provision
 
 Request logging middleware adds an `X-Request-ID` response header and emits structured logs containing method, path, status code, request ID, and request duration.
 
+The metrics middleware normalizes FastAPI route templates where possible, reducing the risk of high-cardinality labels from raw paths or resource IDs.
+
 ## Engineering Notes
 
 The `DevLog` directory documents project decisions and implementation history:
@@ -197,7 +201,7 @@ The `DevLog` directory documents project decisions and implementation history:
 - [0002: Backend Implementation](./DevLog/002_backend_implementation.md)
 - [0003: Operational Signals and Reviewability](./DevLog/0003_operational_signals_and_reviewability.md)
 
-These notes are included to show the reasoning process behind the architecture and the tradeoffs made while keeping the system small enough to review.
+These notes capture the reasoning behind the architecture, corrections made during implementation, and tradeoffs accepted to keep the system maintainable.
 
 ## Roadmap
 
