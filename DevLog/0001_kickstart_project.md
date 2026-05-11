@@ -3,9 +3,9 @@
 
 ## Objective
 
-Set up the repository foundation for a compact backend engineering portfolio project.
+Set up the repository foundation for a compact backend service with clear ownership boundaries and operational documentation.
 
-The initial goal was to create a clean workspace for a FastAPI service, database-backed workflows, local runtime configuration, and engineering notes that explain decisions as the project evolves.
+The initial goal was to create a clean workspace for a FastAPI service, database-backed workflows, local runtime configuration, and engineering notes that explain decisions as the system evolves.
 
 ## Work Completed
 
@@ -23,11 +23,11 @@ Created `.gitignore` entries for generated files, local environments, editor met
 
 **Created the initial README**
 
-Started the project documentation with the intended purpose, local setup direction, and expected areas of implementation.
+Started the service documentation with the intended purpose, local setup direction, and expected areas of implementation.
 
 **Created the DevLog directory**
 
-Added a place to record design notes, implementation choices, and tradeoffs. The DevLog is a lightweight decision record for reviewers and for future maintenance.
+Added a place to record design notes, implementation choices, and tradeoffs. The DevLog is a lightweight decision record for future maintenance and technical review.
 
 ## Positioning Decision
 
@@ -46,4 +46,4 @@ Infrastructure and observability are supporting concerns that make the backend e
 - Build the FastAPI service structure
 - Add PostgreSQL persistence and migrations
 - Introduce health checks and structured logging
-- Add metrics that make API behavior visible during local review
+- Add metrics that make API behavior visible during local operation

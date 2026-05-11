@@ -5,7 +5,7 @@
 
 Implement a maintainable FastAPI backend with explicit boundaries between HTTP handling, business logic, persistence, validation, and database models.
 
-The goal was not to make the largest possible service. The goal was to make a small service that shows how backend code can be structured so it remains understandable as features are added.
+The service is intentionally compact. The goal is to keep the core event workflow understandable while using boundaries that can support additional resources, business rules, and operational requirements over time.
 
 ## Architecture Decisions
 
@@ -49,7 +49,7 @@ Reusable base repository and service classes are useful for simple CRUD behavior
 
 | Decision | Benefit | Tradeoff |
 | --- | --- | --- |
-| Layered service structure | Clear ownership and easier extension | More files than a single-module demo |
+| Layered service structure | Clear ownership and easier extension | More files than a single-module implementation |
 | Async PostgreSQL access | Better fit for concurrent I/O | More care needed around session lifecycle |
 | Base repository/service classes | Reduces repeated CRUD code | Can become too generic if overused |
 | Explicit route prefixes | Clear API boundaries | Slightly more manual route setup |
@@ -59,7 +59,7 @@ Reusable base repository and service classes are useful for simple CRUD behavior
 - Maintainable backend code depends on boundaries, not only framework choice.
 - Async database workflows are useful, but the lifecycle must be deliberate.
 - Abstractions should reduce repetition without hiding the domain.
-- Small portfolio projects can still show production-minded backend engineering when operational behavior and tradeoffs are made visible.
+- Compact services can still reflect production-minded backend engineering when operational behavior and tradeoffs are made visible.
 
 ## Future Work
 
